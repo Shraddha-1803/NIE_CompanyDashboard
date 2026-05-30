@@ -15,6 +15,7 @@ mongoose.connect(process.env.MONGO_URI)
 .catch((err) => console.log(err))
 
 app.use("/api/auth", require("./routes/authRoutes"))
+app.use("/api/employees", require("./routes/employeeRoutes"))
 
 app.get("/", (req, res) => {
   res.send("API Running")
