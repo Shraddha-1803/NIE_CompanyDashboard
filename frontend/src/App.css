@@ -4,342 +4,260 @@
   box-sizing:border-box;
   font-family:'Segoe UI',sans-serif;
 }
-
 body{
   background:#f4f6f9;
 }
 
-/* ===========================
-   NAVBAR
-=========================== */
-
 .top-navbar{
   height:70px;
   background:#fff;
-
   display:flex;
   justify-content:space-between;
   align-items:center;
-
   padding:0 30px;
-
   border-bottom:1px solid #e5e7eb;
-
   box-shadow:
   0 2px 8px rgba(0,0,0,.05);
 }
-
 .top-navbar h2{
   color:#0f172a;
   font-size:24px;
   font-weight:600;
 }
-
 .nav-right{
   display:flex;
   align-items:center;
   gap:20px;
 }
-
 .admin-name{
   color:#64748b;
   font-size:16px;
 }
-
 .nav-right{
   display:flex;
   align-items:center;
   gap:15px;
 }
-
 .admin-name{
   font-size:14px;
   color:#64748b;
 }
-
 .logout-btn{
   background:white;
   border:1px solid #d1d5db;
-
   padding:8px 16px;
-
   border-radius:8px;
-
   font-size:14px;
-
   font-weight:500;
-
   color:#111827;
-
   cursor:pointer;
 }
-
 .logout-btn:hover{
   background:#f3f4f6;
 }
-
-/* ===========================
-   LAYOUT
-=========================== */
 
 .dashboard-body{
   display:flex;
 }
 
-/* ===========================
-   SIDEBAR
-=========================== */
-
 .sidebar{
   width:250px;
-
   min-height:calc(100vh - 80px);
-
   background:white;
-
   padding:25px;
-
   border-right:
   1px solid #e5e7eb;
 }
-
 .sidebar a{
   display:flex;
   align-items:center;
   gap:12px;
-
   text-decoration:none;
-
   color:#64748b;
-
   padding:14px 18px;
-
   border-radius:12px;
-
   margin-bottom:10px;
-
   font-size:16px;
   font-weight:500;
-
   transition:.3s;
 }
-
 .sidebar a:hover{
   background:#eef2ff;
   color:#6366f1;
 }
 
-/* ===========================
-   MAIN CONTENT
-=========================== */
-
 .dashboard-main{
   flex:1;
-
   padding:30px;
 }
-
 .dashboard-main h1{
   color:#0f172a;
   margin-bottom:25px;
 }
 
-/* ===========================
-   STAT CARDS
-=========================== */
-
 .stats-grid{
   display:grid;
-
   grid-template-columns:
   repeat(auto-fit,minmax(240px,1fr));
-
   gap:25px;
 }
-
 .stat-card{
   background:white;
-
   border-radius:18px;
-
   padding:28px;
-
   min-height:160px;
-
   box-shadow:
   0 4px 12px rgba(0,0,0,.05);
-
   position:relative;
 }
-
 .stat-card h4{
   color:#64748b;
   font-size:16px;
   font-weight:500;
 }
-
 .stat-card h2{
   margin-top:35px;
-
   color:#0f172a;
-
   font-size:48px;
   font-weight:700;
 }
-
 .purple{
   border-left:5px solid #7c3aed;
 }
-
 .blue{
   border-left:5px solid #4f46e5;
 }
-
 .orange{
   border-left:5px solid #f59e0b;
 }
-
 .green{
   border-left:5px solid #10b981;
 }
 
-/* ===========================
-   TABLE CARD
-=========================== */
-
 .table-card{
   margin-top:35px;
-
   background:white;
-
   border-radius:18px;
-
   overflow:hidden;
-
   box-shadow:
   0 4px 12px rgba(0,0,0,.05);
 }
-
 .table-header{
   padding:25px 30px;
-
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
-
 .table-header h2{
   color:#0f172a;
 }
-
 .add-btn{
   background: linear-gradient(
     135deg,
     #7c3aed,
     #4f46e5
   );
-
   color:white;
   border:none;
-
   height:36px;
-
   padding:0 14px;
-
   border-radius:8px;
-
   font-size:13px;
   font-weight:500;
-
   cursor:pointer;
 }
-
-/* ===========================
-   TABLE
-=========================== */
 
 table{
   width:100%;
   border-collapse:collapse;
 }
-
 thead{
   background:#fafafa;
 }
-
 th{
   text-align:left;
-
   padding:18px 25px;
-
   color:#64748b;
-
   font-size:14px;
-
   letter-spacing:1px;
-
   border-top:
   1px solid #e5e7eb;
 }
-
 td{
   padding:22px 25px;
-
   color:#0f172a;
-
   border-top:
   1px solid #e5e7eb;
 }
-
 tbody tr:hover{
   background:#fafafa;
 }
 
-/* ===========================
-   STATUS BADGES
-=========================== */
-
 .badge{
   padding:8px 14px;
-
   border-radius:20px;
-
   font-size:13px;
   font-weight:600;
 }
-
 .completed{
   background:#dcfce7;
   color:#15803d;
 }
-
 .progress{
   background:#fef3c7;
   color:#d97706;
 }
-
 .pending{
   background:#e0e7ff;
   color:#4f46e5;
 }
 
-/* ===========================
-   RESPONSIVE
-=========================== */
-
 @media(max-width:900px){
-
   .dashboard-body{
     flex-direction:column;
   }
-
   .sidebar{
     width:100%;
     min-height:auto;
   }
-
   .stats-grid{
     grid-template-columns:1fr;
   }
+}
 
+.employees-page{
+  padding:30px;
+}
+.employee-header{
+  display:flex;
+  gap:15px;
+  align-items:center;
+  margin-bottom:20px;
+}
+.employee-header input{
+  width:250px;
+}
+.modal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:
+  rgba(0,0,0,.5);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.modal-content{
+  width:400px;
+  background:white;
+  padding:25px;
+  border-radius:15px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.modal-content button{
+  width:auto;
 }

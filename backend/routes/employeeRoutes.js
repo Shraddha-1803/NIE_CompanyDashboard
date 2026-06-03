@@ -1,22 +1,46 @@
-const express = require("express")
-const router = express.Router()
-const User = require("../models/User")
-const authMiddleware = require("../middleware/authMiddleware")
+const express = require("express");
+const router = express.Router();
+const authMiddleware = require("../middleware/authMiddleware");
+const {
+  getEmployees,
+  getEmployee,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee
+} = require("../controllers/employeeController");
 
-router.get("/", authMiddleware, async (req, res) => {
+// Get all employees
+router.get(
+  "/",
+  authMiddleware,
+  getEmployees
+);
 
-  const users = await User.find()
+// Get single employee
+router.get(
+  "/:id",
+  authMiddleware,
+  getEmployee
+);
 
-  res.json(users)
-})
+// Add employee
+router.post(
+  "/",
+  authMiddleware,
+  createEmployee
+);
 
-router.delete("/:id", authMiddleware, async (req, res) => {
+// Update employee
+router.put(
+  "/:id",
+  authMiddleware,
+  updateEmployee
+);
 
-  await User.findByIdAndDelete(req.params.id)
-
-  res.json({
-    message: "Employee deleted"
-  })
-})
-
-module.exports = router
+// Delete employee
+router.delete(
+  "/:id",
+  authMiddleware,
+  deleteEmployee
+);
+module.exports = router;
