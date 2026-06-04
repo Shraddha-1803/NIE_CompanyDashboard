@@ -1,4 +1,32 @@
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+// import {
+//   FaHome,
+//   FaUsers,
+//   FaProjectDiagram,
+//   FaTasks
+// } from "react-icons/fa";
+// function Sidebar() {
+//   return (
+//     <div className="sidebar">
+//       <Link to="/dashboard">
+//         <FaHome /> Dashboard
+//       </Link>
+//       <Link to="/employees">
+//         <FaUsers /> Employees
+//       </Link>
+//       <Link to="/projects">
+//         <FaProjectDiagram /> Projects
+//       </Link>
+//       <Link to="/tasks">
+//         <FaTasks /> Tasks
+//       </Link>
+//     </div>
+//   );
+// }
+// export default Sidebar;
+
+
+import { NavLink } from "react-router-dom";
 import {
   FaHome,
   FaUsers,
@@ -10,21 +38,45 @@ function Sidebar() {
   return (
     <div className="sidebar">
 
-      <Link to="/dashboard">
-        <FaHome /> Dashboard
-      </Link>
+      <NavLink
+        to="/dashboard"
+        className={({ isActive }) =>
+          isActive ? "sidebar-link active-link" : "sidebar-link"
+        }
+      >
+        <FaHome />
+        <span>Dashboard</span>
+      </NavLink>
 
-      <Link to="/employees">
-        <FaUsers /> Employees
-      </Link>
+      <NavLink
+        to="/employees"
+        className={({ isActive }) =>
+          isActive ? "sidebar-link active-link" : "sidebar-link"
+        }
+      >
+        <FaUsers />
+        <span>Employees</span>
+      </NavLink>
 
-      <Link to="/projects">
-        <FaProjectDiagram /> Projects
-      </Link>
+      <NavLink
+        to="/projects"
+        className={({ isActive }) =>
+          isActive ? "sidebar-link active-link" : "sidebar-link"
+        }
+      >
+        <FaProjectDiagram />
+        <span>Projects</span>
+      </NavLink>
 
-      <Link to="/tasks">
-        <FaTasks /> Tasks
-      </Link>
+      <NavLink
+        to="/tasks"
+        className={({ isActive }) =>
+          isActive ? "sidebar-link active-link" : "sidebar-link"
+        }
+      >
+        <FaTasks />
+        <span>Tasks</span>
+      </NavLink>
 
     </div>
   );

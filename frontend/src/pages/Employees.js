@@ -31,7 +31,7 @@ function Employees() {
       [e.target.name]:
       e.target.value
     });
-  };
+  };  
   const handleSubmit = async () => {
     try {
       if (editingId) {
@@ -102,14 +102,12 @@ function Employees() {
                 setSearch(
                   e.target.value
                 )
-              }
-            />
+              } />
             <button
               className="add-btn"
               onClick={() =>
                 setShowModal(true)
-              }
-            >
+              } >
               + Add Employee
             </button>
           </div>
@@ -141,23 +139,21 @@ function Employees() {
                         onClick={() =>
                           alert(
                             `
-Name: ${emp.name}
-Email: ${emp.email}
-Department:
-${emp.department}
-Role:
-${emp.role}
-`
+                            Name: ${emp.name}
+                            Email: ${emp.email}
+                            Department:
+                            ${emp.department}
+                            Role:
+                            ${emp.role}
+                            `
                           )
-                        }
-                      >
+                        } >
                         View
                       </button>
                       <button
                         onClick={() =>
                           handleEdit(emp)
-                        }
-                      >
+                        } >
                         Edit
                       </button>
                       <button
@@ -165,8 +161,7 @@ ${emp.role}
                           handleDelete(
                             emp._id
                           )
-                        }
-                      >
+                        } >
                         Delete
                       </button>
                     </td>
@@ -189,38 +184,32 @@ ${emp.role}
               name="name"
               placeholder="Name"
               value={formData.name}
-              onChange={handleChange}
-            />
+              onChange={handleChange} />
             <input
               name="email"
               placeholder="Email"
               value={formData.email}
-              onChange={handleChange}
-            />
+              onChange={handleChange} />
             <input
               name="department"
               placeholder="Department"
               value={
                 formData.department
               }
-              onChange={handleChange}
-            />
+              onChange={handleChange} />
             <input
               name="role"
               placeholder="Role"
               value={formData.role}
-              onChange={handleChange}
-            />
+              onChange={handleChange} />
             <button
-              onClick={handleSubmit}
-            >
+              onClick={handleSubmit} >
               Save
             </button>
             <button
               onClick={() =>
                 setShowModal(false)
-              }
-            >
+              } >
               Cancel
             </button>
           </div>
@@ -230,3 +219,7 @@ ${emp.role}
   );
 }
 export default Employees;
+
+
+
+

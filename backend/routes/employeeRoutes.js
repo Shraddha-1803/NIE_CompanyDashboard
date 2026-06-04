@@ -12,35 +12,35 @@ const {
 // Get all employees
 router.get(
   "/",
-  authMiddleware,
+  // authMiddleware,
   getEmployees
 );
 
 // Get single employee
 router.get(
   "/:id",
-  authMiddleware,
+  // authMiddleware,
   getEmployee
 );
 
 // Add employee
 router.post(
   "/",
-  authMiddleware,
+  // authMiddleware,
   createEmployee
 );
 
 // Update employee
 router.put(
   "/:id",
-  authMiddleware,
+  // authMiddleware,
   updateEmployee
 );
 
 // Delete employee
 router.delete(
   "/:id",
-  authMiddleware,
+  // authMiddleware,
   deleteEmployee
 );
 module.exports = router;

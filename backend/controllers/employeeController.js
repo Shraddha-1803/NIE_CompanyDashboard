@@ -44,31 +44,24 @@ const getEmployee = async (req, res) => {
 
 // Create employee
 const createEmployee = async (req, res) => {
-
   try {
-
     const {
       name,
       email,
       department,
       role
     } = req.body;
-
     const existingUser =
       await User.findOne({ email });
-
     if (existingUser) {
       return res.status(400).json({
         message: "Email already exists"
       });
     }
-
     const hashedPassword =
       await bcrypt.hash(
         "employee123",
-        10
-      );
-
+        10 );
     const employee =
       await User.create({
         name,
@@ -77,14 +70,34 @@ const createEmployee = async (req, res) => {
         role,
         password: hashedPassword
       });
-
     res.status(201).json(employee);
-
   } catch (error) {
 
-    res.status(500).json({
-      message: error.message
-    });
+
+
+
+
+
+
+
+
+
+ console.log("CREATE EMPLOYEE ERROR:");
+  console.log(error);
+
+  res.status(500).json({
+    message: error.message
+  });
+
+
+
+
+
+
+
+    // res.status(500).json({
+    //   message: error.message
+    // });
   }
 };
 
