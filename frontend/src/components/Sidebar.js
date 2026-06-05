@@ -26,6 +26,59 @@
 // export default Sidebar;
 
 
+// import { NavLink } from "react-router-dom";
+// import {
+//   FaHome,
+//   FaUsers,
+//   FaProjectDiagram,
+//   FaTasks
+// } from "react-icons/fa";
+// function Sidebar() {
+//   return (
+//     <div className="sidebar">
+//       <NavLink
+//         to="/dashboard"
+//         className={({ isActive }) =>
+//           isActive ? "sidebar-link active-link" : "sidebar-link"
+//         } >
+//         <FaHome />
+//         <span>Dashboard</span>
+//       </NavLink>
+//       <NavLink
+//         to="/employees"
+//         className={({ isActive }) =>
+//           isActive ? "sidebar-link active-link" : "sidebar-link"
+//         } >
+//         <FaUsers />
+//         <span>Employees</span>
+//       </NavLink>
+//       <NavLink
+//         to="/projects"
+//         className={({ isActive }) =>
+//           isActive ? "sidebar-link active-link" : "sidebar-link"
+//         } >
+//         <FaProjectDiagram />
+//         <span>Projects</span>
+//       </NavLink>
+//       <NavLink
+//         to="/tasks"
+//         className={({ isActive }) =>
+//           isActive ? "sidebar-link active-link" : "sidebar-link"
+//         } >
+//         <FaTasks />
+//         <span>Tasks</span>
+//       </NavLink>
+//     </div>
+//   );
+// }
+// export default Sidebar;
+
+
+
+
+
+
+
 import { NavLink } from "react-router-dom";
 import {
   FaHome,
@@ -41,41 +94,37 @@ function Sidebar() {
       <NavLink
         to="/dashboard"
         className={({ isActive }) =>
-          isActive ? "sidebar-link active-link" : "sidebar-link"
+          isActive ? "active-link" : ""
         }
       >
-        <FaHome />
-        <span>Dashboard</span>
+        <FaHome /> Dashboard
       </NavLink>
 
       <NavLink
         to="/employees"
         className={({ isActive }) =>
-          isActive ? "sidebar-link active-link" : "sidebar-link"
+          isActive ? "active-link" : ""
         }
       >
-        <FaUsers />
-        <span>Employees</span>
+        <FaUsers /> Employees
       </NavLink>
 
       <NavLink
         to="/projects"
         className={({ isActive }) =>
-          isActive ? "sidebar-link active-link" : "sidebar-link"
+          isActive ? "active-link" : ""
         }
       >
-        <FaProjectDiagram />
-        <span>Projects</span>
+        <FaProjectDiagram /> Projects
       </NavLink>
 
       <NavLink
         to="/tasks"
         className={({ isActive }) =>
-          isActive ? "sidebar-link active-link" : "sidebar-link"
+          isActive ? "active-link" : ""
         }
       >
-        <FaTasks />
-        <span>Tasks</span>
+        <FaTasks /> Tasks
       </NavLink>
 
     </div>

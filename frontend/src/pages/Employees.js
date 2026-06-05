@@ -92,29 +92,46 @@ function Employees() {
       <div className="dashboard-body">
         <Sidebar />
         <div className="dashboard-main">
-          <div className="employee-header">
-            <h2>Employees</h2>
-            <input
-              type="text"
-              placeholder="Search Employee"
-              value={search}
-              onChange={(e) =>
-                setSearch(
-                  e.target.value
-                )
-              } />
-            <button
-              className="add-btn"
-              onClick={() =>
-                setShowModal(true)
-              } >
-              + Add Employee
-            </button>
-          </div>
+          <div className="crm-page-header">
+  <div className="page-title">
+    <div className="page-icon">
+      👥
+    </div>
+    <div>
+      <h1>Employees</h1>
+      <p> Manage and view all employees in the organization </p>
+    </div>
+  </div>
+  <button
+    className="crm-btn"
+    onClick={() => {
+      setEditingId(null);
+      setFormData({
+        name: "",
+        email: "",
+        department: "",
+        role: ""
+      });
+      setShowModal(true);
+    }}   >
+    + Add Employee
+  </button>
+</div>
+<div className="employee-toolbar">
+  <input
+    type="text"
+    placeholder="🔎︎   Search employee by name"
+    value={search}
+    onChange={(e) =>
+      setSearch(e.target.value)
+    }
+    className="modern-search" />
+</div>
           <div className="table-card">
             <table>
               <thead>
                 <tr>
+                  <th>#</th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Department</th>
@@ -124,47 +141,64 @@ function Employees() {
               </thead>
               <tbody>
                 {filteredEmployees.map(
-                  (emp) => (
+                  (emp , index) => (
                   <tr key={emp._id}>
-                    <td>{emp.name}</td>
+                    <td>{index + 1}</td>
+                    <td>
+  <div className="employee-info">
+    <div className="employee-avatar">
+      {emp.name?.charAt(0)}
+    </div>
+    <div>
+      <div className="employee-name">
+        {emp.name}
+      </div>
+      <div className="employee-id">
+        ID: EMP00{index + 1}
+      </div>
+    </div>
+  </div>
+</td>
                     <td>{emp.email}</td>
                     <td>
-                      {emp.department}
-                    </td>
+  <span className="department-pill">
+    {emp.department || "General"}
+  </span>
+</td>
                     <td>
                       {emp.role}
                     </td>
                     <td>
-                      <button
-                        onClick={() =>
-                          alert(
-                            `
-                            Name: ${emp.name}
-                            Email: ${emp.email}
-                            Department:
-                            ${emp.department}
-                            Role:
-                            ${emp.role}
-                            `
-                          )
-                        } >
-                        View
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleEdit(emp)
-                        } >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleDelete(
-                            emp._id
-                          )
-                        } >
-                        Delete
-                      </button>
-                    </td>
+  <button
+    className="icon-btn"
+    onClick={() =>
+      alert(
+        `Name: ${emp.name}
+Email: ${emp.email}
+Department: ${emp.department}
+Role: ${emp.role}`
+      )
+    }
+  >
+    👁
+  </button>
+  <button
+    className="icon-btn"
+    onClick={() =>
+      handleEdit(emp)
+    }
+  >
+    ✎
+  </button>
+  <button
+    className="delete-icon-btn"
+    onClick={() =>
+      handleDelete(emp._id)
+    }
+  >
+    🗑
+  </button>
+</td>
                   </tr>
                 ))}
               </tbody>
@@ -219,7 +253,3 @@ function Employees() {
   );
 }
 export default Employees;
-
-
-
-
