@@ -129,7 +129,6 @@ body{
   border-left:5px solid #10b981;
 }
 .table-card{
-  background:white;
   border-radius:18px;
   overflow:hidden;
   box-shadow:
@@ -479,7 +478,7 @@ tbody tr:hover{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  /* margin-bottom:30px; */
+  margin-top:40px;
   padding:25px;
   background:white;
   border-radius:22px;
@@ -622,13 +621,6 @@ tbody tr:hover{
 .sidebar .active-link svg{
   color:#4f46e5;
 }
-.table-card{
-  background:white;
-  border-radius:24px !important;
-  overflow:hidden;
-  box-shadow:
-    0 10px 25px rgba(15,23,42,.06) !important;
-}
 .crm-page-header{
   margin-bottom:30px;
 }
@@ -660,4 +652,53 @@ tbody tr:hover{
   justify-content:center;
   align-items:center;
   font-weight:700;
+}
+.progress-wrapper{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.progress-bar{
+  width:120px;
+  height:8px;
+  background:#e5e7eb;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  background:
+  linear-gradient(
+    90deg,
+    #7c3aed,
+    #4f46e5
+  );
+}
+.status-pill{
+  padding:7px 14px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:600;
+}
+
+.planning{
+  background:#ede9fe;
+  color:#7c3aed;
+}
+
+.in-progress{
+  background:#fef3c7;
+  color:#d97706;
+}
+
+.testing{
+  background:#dbeafe;
+  color:#2563eb;
+}
+
+.completed{
+  background:#dcfce7;
+  color:#15803d;
 }

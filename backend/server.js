@@ -16,6 +16,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 app.use("/api/auth", require("./routes/authRoutes"))
 app.use("/api/employees", require("./routes/employeeRoutes"))
+app.use("/api/projects", require("./routes/projectRoutes"))
 
 app.get("/", (req, res) => {
   res.send("API Running")
