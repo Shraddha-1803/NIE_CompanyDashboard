@@ -1,48 +1,35 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
-
-// Get all employees
 const getEmployees = async (req, res) => {
   try {
-
     const employees = await User.find()
       .select("-password");
-
     res.status(200).json(employees);
-
   } catch (error) {
-
     res.status(500).json({
       message: error.message
     });
   }
 };
-
-// Get single employee
 const getEmployee = async (req, res) => {
   try {
-
     const employee =
       await User.findById(req.params.id)
       .select("-password");
-
     if (!employee) {
       return res.status(404).json({
         message: "Employee not found"
       });
     }
-
     res.status(200).json(employee);
-
   } catch (error) {
-
     res.status(500).json({
       message: error.message
     });
   }
 };
-
-// Create employee
+const Employee = require("../models/User");
+const Activity = require("../models/Activity");
 const createEmployee = async (req, res) => {
   try {
     const {
@@ -70,42 +57,22 @@ const createEmployee = async (req, res) => {
         role,
         password: hashedPassword
       });
+      await Activity.create({
+  action: "Added Employee",
+  name: employee.name,
+  type: "Employee"
+});
     res.status(201).json(employee);
   } catch (error) {
-
-
-
-
-
-
-
-
-
-
  console.log("CREATE EMPLOYEE ERROR:");
   console.log(error);
-
   res.status(500).json({
     message: error.message
   });
-
-
-
-
-
-
-
-    // res.status(500).json({
-    //   message: error.message
-    // });
   }
 };
-
-// Update employee
 const updateEmployee = async (req, res) => {
-
   try {
-
     const employee =
       await User.findByIdAndUpdate(
         req.params.id,
@@ -114,51 +81,43 @@ const updateEmployee = async (req, res) => {
           new: true
         }
       );
-
     if (!employee) {
       return res.status(404).json({
         message: "Employee not found"
       });
     }
-
+        await Activity.create({
+      action: "Updated Employee",
+      name: employee.name,
+      type: "Employee"
+    });
     res.status(200).json(employee);
-
   } catch (error) {
-
     res.status(500).json({
       message: error.message
     });
   }
 };
-
-// Delete employee
 const deleteEmployee = async (req, res) => {
-
   try {
-
     const employee =
       await User.findByIdAndDelete(
         req.params.id
       );
-
     if (!employee) {
       return res.status(404).json({
         message: "Employee not found"
       });
     }
-
     res.status(200).json({
       message: "Employee deleted successfully"
     });
-
   } catch (error) {
-
     res.status(500).json({
       message: error.message
     });
   }
 };
-
 module.exports = {
   getEmployees,
   getEmployee,

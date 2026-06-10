@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
+const Activity = require("../models/Activity");
 router.get("/", async (req, res) => {
   try {
     const tasks = await Task.find()
@@ -18,6 +19,11 @@ router.post("/", async (req, res) => {
     const task = new Task(req.body);
     const savedTask =
       await task.save();
+      await Activity.create({
+  action: "Created Task",
+  name: savedTask.title,
+  type: "Task"
+});
     res.status(201).json(savedTask);
   } catch (err) {
     res.status(500).json({
@@ -33,6 +39,11 @@ router.put("/:id", async (req, res) => {
         req.body,
         { new: true }
       );
+      await Activity.create({
+  action: `Status changed to ${updatedTask.status}`,
+  name: updatedTask.title,
+  type: "Task"
+});
     res.json(updatedTask);
   } catch (err) {
     res.status(500).json({

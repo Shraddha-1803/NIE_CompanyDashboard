@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Project = require("../models/Project");
+const Activity = require("../models/Activity");
 router.get("/", async (req, res) => {
   try {
     const projects = await Project.find();
@@ -22,6 +23,11 @@ router.post("/", async (req, res) => {
     });
     const savedProject =
       await project.save();
+      await Activity.create({
+  action: "Created Project",
+  name: savedProject.name,
+  type: "Project"
+});
     res.status(201).json(
       savedProject
     );
