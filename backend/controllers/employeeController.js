@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const Notification = require("../models/Notification");
 const getEmployees = async (req, res) => {
   try {
     const employees = await User.find()
@@ -57,11 +58,15 @@ const createEmployee = async (req, res) => {
         role,
         password: hashedPassword
       });
+      await Notification.create({
+        message: `${employee.name} was added as a new employee`,
+        type: "employee"
+      });
       await Activity.create({
-  action: "Added Employee",
-  name: employee.name,
-  type: "Employee"
-});
+        action: "Added Employee",
+        name: employee.name,
+        type: "Employee"
+      });
     res.status(201).json(employee);
   } catch (error) {
  console.log("CREATE EMPLOYEE ERROR:");
@@ -86,7 +91,11 @@ const updateEmployee = async (req, res) => {
         message: "Employee not found"
       });
     }
-        await Activity.create({
+    await Notification.create({
+      message: `${employee.name} details were updated`,
+      type: "activity"
+    });
+    await Activity.create({
       action: "Updated Employee",
       name: employee.name,
       type: "Employee"
