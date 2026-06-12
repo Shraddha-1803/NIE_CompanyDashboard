@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Project = require("../models/Project");
 const Activity = require("../models/Activity");
+const Notification = require("../models/Notification");
 router.get("/", async (req, res) => {
   try {
     const projects = await Project.find();
@@ -28,6 +29,10 @@ router.post("/", async (req, res) => {
   name: savedProject.name,
   type: "Project"
 });
+await Notification.create({
+  message: `${savedProject.name} project was created`,
+  type:"project"
+});
     res.status(201).json(
       savedProject
     );
@@ -46,6 +51,10 @@ router.put("/:id", async (req, res) => {
         req.body,
         { new: true }
       );
+      await Notification.create({
+  message:`${updatedProject.name} project was updated`,
+  type:"project"
+});
     res.json(updatedProject);
   } catch (err) {
     res.status(500).json({

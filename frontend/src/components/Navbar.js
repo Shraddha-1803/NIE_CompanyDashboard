@@ -1,3 +1,4 @@
+import Notifications from "./Notifications";
 function Navbar() {
   return (
     <div className="top-navbar">
@@ -8,7 +9,8 @@ function Navbar() {
       </div>
       <div className="nav-right">
         <div className="notification">
-          🔔
+          {/* 🔔 */}
+          <Notifications/>
         </div>
           <div className="admin-avatar">
             A

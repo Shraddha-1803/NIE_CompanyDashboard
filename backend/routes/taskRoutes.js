@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
 const Activity = require("../models/Activity");
+const Notification = require("../models/Notification");
 router.get("/", async (req, res) => {
   try {
     const tasks = await Task.find()
@@ -24,6 +25,10 @@ router.post("/", async (req, res) => {
   name: savedTask.title,
   type: "Task"
 });
+await Notification.create({
+ message:`New task assigned: ${savedTask.title}`,
+ type:"task"
+});
     res.status(201).json(savedTask);
   } catch (err) {
     res.status(500).json({
@@ -43,6 +48,10 @@ router.put("/:id", async (req, res) => {
   action: `Status changed to ${updatedTask.status}`,
   name: updatedTask.title,
   type: "Task"
+});
+await Notification.create({
+   message:`Task ${updatedTask.title} status updated to ${updatedTask.status}`,
+  type: "task"
 });
     res.json(updatedTask);
   } catch (err) {
