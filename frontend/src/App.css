@@ -727,3 +727,117 @@ tbody tr:hover{
   border-radius: 8px;
   cursor: pointer;
 }
+.navbar{
+height:80px;
+width:100%;
+background:white;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 35px;
+box-sizing:border-box;
+border-bottom:1px solid #eee;
+position:relative;
+z-index:100;
+}
+.navbar-title{
+font-size:24px;
+font-weight:700;
+color:#111827;
+display:flex;
+align-items:center;
+gap:10px;
+}
+.navbar-right{
+display:flex;
+align-items:center;
+gap:35px;
+}
+.notification-box{
+position:relative;
+}
+.bell-btn{
+border:none;
+background:none;
+font-size:24px;
+cursor:pointer;
+position:relative;
+padding:5px;
+}
+.notification-count{
+position:absolute;
+top:-6px;
+right:-8px;
+background:#ef4444;
+color:white;
+font-size:11px;
+font-weight:700;
+width:18px;
+height:18px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+.notification-dropdown{
+position:absolute;
+right:0;
+top:45px;
+width:330px;
+background:white;
+border-radius:14px;
+box-shadow:0 15px 35px rgba(0,0,0,.15);
+padding:15px;
+overflow:hidden;
+}
+.notification-dropdown h3{
+margin:0 0 10px;
+font-size:18px;
+}
+.notification-item{
+padding:12px;
+border-radius:10px;
+cursor:pointer;
+border-bottom:1px solid #f1f1f1;
+}
+.notification-item:hover{
+background:#f5f7ff;
+}
+.notification-item p{
+margin:0;
+font-size:14px;
+color:#111827;
+}
+.notification-item small{
+color:#6366f1;
+font-size:12px;
+}
+.notification-item.read{
+opacity:.55;
+}
+.profile{
+display:flex;
+align-items:center;
+gap:12px;
+}
+.avatar{
+height:42px;
+width:42px;
+border-radius:50%;
+background:#eef2ff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:700;
+color:#4f46e5;
+font-size:18px;
+}
+.profile b{
+display:block;
+font-size:16px;
+}
+.profile p{
+margin:2px 0 0;
+font-size:13px;
+color:#6b7280;
+}
