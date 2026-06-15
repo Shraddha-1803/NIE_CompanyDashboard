@@ -237,6 +237,10 @@ Company Operations Dashboard
 │   │     ├── index.css
 │   │     └── index.js
 │   │
+│   ├── public 
+│   │     ├── index.html
+│   │     └── logo.png
+│   │
 │   └── .gitignore
 │
 └── README.md
@@ -426,6 +430,7 @@ Planned features:
 # 👩‍💻 Developer
 
 **Shraddha Agarwal**
+
 GitHub: https://github.com/Shraddha-1803
 
 ---
