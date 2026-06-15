@@ -7,11 +7,9 @@ function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [projects, setProjects] = useState([]);
-
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
-
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -20,7 +18,6 @@ function Tasks() {
     priority: "Medium",
     status: "Pending"
   });
-
   const fetchTasks = async () => {
     try {
       const res = await API.get("/tasks");
@@ -29,7 +26,6 @@ function Tasks() {
       console.log(err);
     }
   };
-
   const fetchEmployees = async () => {
     try {
       const res = await API.get("/auth/users");
@@ -38,7 +34,6 @@ function Tasks() {
       console.log(err);
     }
   };
-
   const fetchProjects = async () => {
     try {
       const res = await API.get("/projects");
@@ -47,20 +42,17 @@ function Tasks() {
       console.log(err);
     }
   };
-
   useEffect(() => {
     fetchTasks();
     fetchEmployees();
     fetchProjects();
   }, []);
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-
   const handleSubmit = async () => {
     try {
       if (editingId) {
@@ -68,12 +60,9 @@ function Tasks() {
       } else {
         await API.post("/tasks", formData);
       }
-
       fetchTasks();
-
       setShowModal(false);
       setEditingId(null);
-
       setFormData({
         title: "",
         description: "",
@@ -86,10 +75,8 @@ function Tasks() {
       console.log(err);
     }
   };
-
   const handleEdit = (task) => {
     setEditingId(task._id);
-
     setFormData({
       title: task.title || "",
       description: task.description || "",
@@ -100,10 +87,8 @@ function Tasks() {
       priority: task.priority || "Medium",
       status: task.status || "Pending"
     });
-
     setShowModal(true);
   };
-
   const handleDelete = async (id) => {
     try {
       await API.delete(`/tasks/${id}`);
@@ -112,23 +97,18 @@ function Tasks() {
       console.log(err);
     }
   };
-
   const filteredTasks = tasks.filter((task) =>
     task.title?.toLowerCase().includes(search.toLowerCase())
   );
-
   return (
     <>
       <Navbar />
-
       <div className="dashboard-body">
         <Sidebar />
-
         <div className="dashboard-main">
           <div className="crm-page-header">
             <div className="page-title">
               <div className="page-icon">📋</div>
-
               <div>
                 <h2>Tasks</h2>
                 <p>
@@ -136,12 +116,10 @@ function Tasks() {
                 </p>
               </div>
             </div>
-
             <button
               className="crm-btn"
               onClick={() => {
                 setEditingId(null);
-
                 setFormData({
                   title: "",
                   description: "",
@@ -150,14 +128,12 @@ function Tasks() {
                   priority: "Medium",
                   status: "Pending"
                 });
-
                 setShowModal(true);
               }}
             >
               + Add Task
             </button>
           </div>
-
           <div className="employee-toolbar">
             <input
               type="text"
@@ -169,7 +145,6 @@ function Tasks() {
               className="modern-search"
             />
           </div>
-
           <div className="table-card">
             <table>
               <thead>
@@ -183,47 +158,39 @@ function Tasks() {
                   <th>Actions</th>
                 </tr>
               </thead>
-
               <tbody>
                 {filteredTasks.map(
                   (task, index) => (
                     <tr key={task._id}>
                       <td>{index + 1}</td>
-
                       <td>
                         <div className="employee-info">
                           <div className="employee-avatar">
                             📋
                           </div>
-
                           <div>
                             <div className="employee-name">
                               {task.title}
                             </div>
-
                             <div className="employee-id">
                               {task.description}
                             </div>
                           </div>
                         </div>
                       </td>
-
                       <td>
                         {task.projectId?.name ||
                           task.projectId}
                       </td>
-
                       <td>
                         {task.assignedTo?.name ||
                           task.assignedTo}
                       </td>
-
                       <td>
                         <span className="department-pill">
                           {task.priority}
                         </span>
                       </td>
-
                       <td>
                         <span
                           className={`status-pill ${task.status
@@ -233,7 +200,6 @@ function Tasks() {
                           {task.status}
                         </span>
                       </td>
-
                       <td>
                         <button
                           className="icon-btn"
@@ -255,7 +221,6 @@ Status: ${task.status}`
                         >
                           👁
                         </button>
-
                         <button
                           className="icon-btn"
                           onClick={() =>
@@ -264,7 +229,6 @@ Status: ${task.status}`
                         >
                           ✎
                         </button>
-
                         <button
                           className="delete-icon-btn"
                           onClick={() =>
@@ -282,7 +246,6 @@ Status: ${task.status}`
           </div>
         </div>
       </div>
-
       {showModal && (
         <div className="modal">
           <div className="modal-content">
@@ -291,7 +254,6 @@ Status: ${task.status}`
                 ? "Edit Task"
                 : "Add Task"}
             </h3>
-
             <input
               type="text"
               name="title"
@@ -299,7 +261,6 @@ Status: ${task.status}`
               value={formData.title}
               onChange={handleChange}
             />
-
             <input
               type="text"
               name="description"
@@ -307,7 +268,6 @@ Status: ${task.status}`
               value={formData.description}
               onChange={handleChange}
             />
-
             <select
               name="assignedTo"
               value={formData.assignedTo}
@@ -316,7 +276,6 @@ Status: ${task.status}`
               <option value="">
                 Select Employee
               </option>
-
               {employees.map((employee) => (
                 <option
                   key={employee._id}
@@ -326,7 +285,6 @@ Status: ${task.status}`
                 </option>
               ))}
             </select>
-
             <select
               name="projectId"
               value={formData.projectId}
@@ -335,7 +293,6 @@ Status: ${task.status}`
               <option value="">
                 Select Project
               </option>
-
               {projects.map((project) => (
                 <option
                   key={project._id}
@@ -345,7 +302,6 @@ Status: ${task.status}`
                 </option>
               ))}
             </select>
-
             <select
               name="priority"
               value={formData.priority}
@@ -355,7 +311,6 @@ Status: ${task.status}`
               <option>Medium</option>
               <option>High</option>
             </select>
-
             <select
               name="status"
               value={formData.status}
@@ -365,11 +320,9 @@ Status: ${task.status}`
               <option>In Progress</option>
               <option>Completed</option>
             </select>
-
             <button onClick={handleSubmit}>
               Save
             </button>
-
             <button
               onClick={() =>
                 setShowModal(false)
@@ -383,5 +336,4 @@ Status: ${task.status}`
     </>
   );
 }
-
 export default Tasks;
