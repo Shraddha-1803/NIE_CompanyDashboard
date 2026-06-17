@@ -16,6 +16,7 @@ app.use("/api/employees", require("./routes/employeeRoutes"))
 app.use("/api/projects", require("./routes/projectRoutes"))
 app.use("/api/tasks", require("./routes/taskRoutes"))
 app.use("/api/activities", require("./routes/activityRoutes"))
+app.use("/api/profile", require("./routes/profileRoutes"))
 app.use("/api/notifications", notificationRoutes)
 app.get("/", (req, res) => {
   res.send("API Running")
