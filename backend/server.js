@@ -7,10 +7,11 @@ const notificationRoutes = require("./routes/notificationRoutes")
 dotenv.config()
 const app = express()
 app.use(cors({
-origin:[
+origin:
+// [
 "https://company-dashboard-frontend-q5bn.onrender.com",
-"http://localhost:3000"
-],
+// "http://localhost:3000"
+// ],
 credentials:true
 }))
 app.use(express.json())
