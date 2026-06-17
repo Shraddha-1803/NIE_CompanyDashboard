@@ -6,7 +6,9 @@ const projectRoutes = require("./routes/projectRoutes")
 const notificationRoutes = require("./routes/notificationRoutes")
 dotenv.config()
 const app = express()
-app.use(cors())
+app.use(cors({
+    origin:"*"
+}))
 app.use(express.json())
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("MongoDB Connected"))
