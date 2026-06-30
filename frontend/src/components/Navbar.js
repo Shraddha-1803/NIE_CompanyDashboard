@@ -1,15 +1,26 @@
-import { useEffect, useState, useRef } from "react";
+import { 
+useEffect, 
+useState, 
+useRef 
+} from "react";
 import API from "../services/api";
-function Navbar() {
-const [notifications,setNotifications] = useState([]);
-const [open,setOpen] = useState(false);
-const [profileOpen,setProfileOpen] = useState(false);
-const [user,setUser] = useState(null);
-const notificationRef = useRef();
-const profileRef = useRef();
+function Navbar(){
+const [notifications,setNotifications] =
+useState([]);
+const [open,setOpen] =
+useState(false);
+const [profileOpen,setProfileOpen] =
+useState(false);
+const [user,setUser] =
+useState(null);
+const notificationRef =
+useRef();
+const profileRef =
+useRef();
 const fetchProfile = async()=>{
 try{
-const res = await API.get("/profile");
+const res =
+await API.get("/profile");
 setUser(res.data);
 }catch(error){
 console.log(
@@ -24,7 +35,10 @@ const res =
 await API.get("/notifications");
 setNotifications(res.data);
 }catch(error){
-console.log(error);
+console.log(
+"Notification Error",
+error
+);
 }
 };
 useEffect(()=>{
@@ -62,7 +76,7 @@ close
 );
 };
 },[]);
-const markRead=async(id)=>{
+const markRead = async(id)=>{
 try{
 await API.put(
 `/notifications/${id}`
@@ -77,12 +91,13 @@ notifications.filter(
 n=>!n.isRead
 ).length;
 return(
-<div className="navbar">
-<div className="navbar-logo">
+<nav className="navbar">
+<div className="logo">
 🏢 Company Operations Dashboard
 </div>
-<div className="navbar-right">
-<div
+<div className="nav-right">
+{/* NOTIFICATION */}
+<div 
 className="notification-wrapper"
 ref={notificationRef}
 >
@@ -96,7 +111,7 @@ setProfileOpen(false);
 🔔
 {
 unreadCount>0 &&
-<span className="notification-count">
+<span className="badge">
 {unreadCount}
 </span>
 }
@@ -108,13 +123,26 @@ open &&
 Notifications
 </h3>
 {
+notifications.length===0 ?
+<p>
+No notifications
+</p>
+:
 notifications
 .slice(0,8)
 .map(item=>(
 <div
 key={item._id}
-className="notification-item"
-onClick={()=>markRead(item._id)}
+className={
+item.isRead
+?
+"notification-item read"
+:
+"notification-item"
+}
+onClick={()=>
+markRead(item._id)
+}
 >
 <p>
 {item.message}
@@ -129,8 +157,11 @@ onClick={()=>markRead(item._id)}
 }
 </div>
 <div
-className="profile-section"
+className="profile-wrapper"
 ref={profileRef}
+>
+<div
+className="profile-btn"
 onClick={()=>{
 setProfileOpen(!profileOpen);
 setOpen(false);
@@ -146,100 +177,59 @@ user.name.charAt(0).toUpperCase()
 }
 </div>
 <div>
-<h3>
+<h4>
 {
-user?.name || "Loading..."
+user?.name || "User"
 }
+</h4>
+<p>
+{
+user?.role || "employee"
+}
+</p>
+</div>
+</div>
+{
+profileOpen &&
+<div className="profile-dropdown">
+<h3>
+Profile
 </h3>
 <p>
+<b>Name:</b>
 {
-user?.role || ""
+user?.name
 }
 </p>
-</div>
-</div>
-{
-profileOpen && user &&
-<div className="profile-card">
-<div className="profile-header">
-<div className="big-avatar">
-{
-user.name.charAt(0).toUpperCase()
-}
-</div>
-<div>
-<h2>
-{user.name}
-</h2>
-<p>
-{user.role}
-</p>
-</div>
-</div>
-<div className="profile-details">
 <p>
 <b>Email:</b>
-{user.email}
-</p>
-<p>
-<b>Department:</b>
-{user.department || "N/A"}
+{
+user?.email
+}
 </p>
 <p>
 <b>Role:</b>
-{user.role}
-</p>
-<p>
-<b>Team:</b>
-{user.team || "N/A"}
-</p>
-<hr/>
-<h3>
-Projects
-</h3>
 {
-user.projects?.length ?
-user.projects.map(
-(p)=>
-<p key={p._id}>
-{p.name}
-</p>
-)
-:
-<p>No ongoing projects</p>
+user?.role
 }
-<h3>
-Tasks
-</h3>
+</p>
+<p>
+<b>Department:</b>
 {
-user.tasks?.length ?
-user.tasks.map(
-(t)=>
-<p key={t._id}>
-{t.title}
-</p>
-)
-:
-<p>No tasks assigned</p>
+user?.department || "Not assigned"
 }
-<hr/>
-<p>
-<b>
-Completed Projects:
-</b>
-{user.completedProjects || 0}
 </p>
 <p>
-<b>
-Completed Tasks:
-</b>
-{user.completedTasks || 0}
+<b>Employee ID:</b>
+{
+user?._id
+}
 </p>
-</div>
 </div>
 }
 </div>
 </div>
+</nav>
 );
 }
 export default Navbar;

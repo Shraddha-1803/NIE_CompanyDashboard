@@ -1,32 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const Activity = require("../models/Activity");
 const authMiddleware = require("../middleware/authMiddleware");
+const roleMiddleware = require("../middleware/roleMiddleware");
 const {
   getEmployees,
   getEmployee,
   createEmployee,
   updateEmployee,
-  deleteEmployee
+  deleteEmployee,
+  updateRole
 } = require("../controllers/employeeController");
-router.get(
-  "/",
-  getEmployees
-);
-router.get(
-  "/:id",
-  getEmployee
-);
-router.post(
-  "/",
-  createEmployee
-);
-router.put(
-  "/:id",
-  updateEmployee
-);
-router.delete(
-  "/:id",
-  deleteEmployee
-);
+// View employees - everyone
+router.get("/", authMiddleware, getEmployees);
+router.get("/:id", authMiddleware, getEmployee);
+// Add employee - admin only
+router.post("/", authMiddleware, roleMiddleware(["admin"]), createEmployee);
+// Update employee info - admin only
+router.put("/:id", authMiddleware, roleMiddleware(["admin"]), updateEmployee);
+// Update role - admin only (separate, explicit endpoint)
+router.put("/:id/role", authMiddleware, roleMiddleware(["admin"]), updateRole);
+// Delete - admin only
+router.delete("/:id", authMiddleware, roleMiddleware(["admin"]), deleteEmployee);
 module.exports = router;
