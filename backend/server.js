@@ -8,10 +8,9 @@ dotenv.config()
 const app = express()
 app.use(cors({
 origin:
-[
   "http://localhost:3000"
 // "https://company-dashboard-frontend-q5bn.onrender.com"
-],
+,
 methods:["GET","POST","PUT","DELETE"],
 credentials:true
 }))
@@ -19,6 +18,13 @@ app.use(express.json())
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("MongoDB Connected"))
 .catch((err) => console.log(err))
+mongoose.connection.once("open", () => {
+  console.log("Database Name:", mongoose.connection.db.databaseName);
+});
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.originalUrl}`);
+  next();
+});
 app.use("/api/auth", require("./routes/authRoutes"))
 app.use("/api/employees", require("./routes/employeeRoutes"))
 app.use("/api/projects", require("./routes/projectRoutes"))
