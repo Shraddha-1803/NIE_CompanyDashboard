@@ -2,43 +2,51 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import API from "../services/api";
-
 function Dashboard() {
   const [employees, setEmployees] = useState([]);
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [activities, setActivities] = useState([]);
-
+  const [profile, setProfile] = useState(null);
+  const [userRole, setUserRole] = useState("");
   useEffect(() => {
     fetchDashboardData();
   }, []);
-
   const fetchDashboardData = async () => {
     try {
-      const [
-        employeeRes,
-        projectRes,
-        taskRes,
-        activityRes
-      ] = await Promise.all([
-        API.get("/employees"),
-        API.get("/projects"),
-        API.get("/tasks"),
-        API.get("/activities")
-      ]);
-      setEmployees(employeeRes.data);
-      setProjects(projectRes.data);
-      setTasks(taskRes.data);
-      setActivities(activityRes.data);
-    } catch (err) {
-      console.log(err);
+        const [
+            employeeRes,
+            projectRes,
+            taskRes,
+            activityRes,
+            profileRes
+        ] = await Promise.all([
+            API.get("/employees"),
+            API.get("/projects"),
+            API.get("/tasks"),
+            API.get("/activities"),
+            API.get("/auth/profile")
+        ]);
+        setEmployees(employeeRes.data);
+        setProjects(projectRes.data);
+        setTasks(taskRes.data);
+        setActivities(activityRes.data);
+        setProfile(profileRes.data);
+        setUserRole(profileRes.data.role);
     }
-  };
+    catch(err){
+        console.log(err);
+    }
+};
   const activeTasks = tasks.filter(
-    (task) => task.status !== "Completed"
+    task => task.status !== "Completed"
   ).length;
   const completedTasks = tasks.filter(
-    (task) => task.status === "Completed"
+    task => task.status === "Completed"
+  ).length;
+  const assignedProjects = projects.length;
+  const completedProjects = projects.filter(
+    project => project.status === "Completed"
   ).length;
   return (
     <div className="dashboard-wrapper">
@@ -48,12 +56,24 @@ function Dashboard() {
         <div className="dashboard-main">
           <div className="stats-grid">
             <div className="stat-card purple">
-              <h4>Total Employees</h4>
-              <h2>{employees.length}</h2>
+              <h4> { 
+                userRole==="admin" ? "Total Employees" : "Assigned Projects"
+                } 
+              </h4>
+              <h2> { 
+                userRole==="admin" ? employees.length : assignedProjects
+                } 
+              </h2>
             </div>
             <div className="stat-card blue">
-              <h4>Total Projects</h4>
-              <h2>{projects.length}</h2>
+              <h4> { 
+                userRole==="admin" ? "Total Projects" : "Completed Projects"
+                } 
+              </h4>
+              <h2>{
+                userRole==="admin" ? projects.length : completedProjects
+                }
+              </h2>
             </div>
             <div className="stat-card orange">
               <h4>Active Tasks</h4>
@@ -134,5 +154,4 @@ function Dashboard() {
     </div>
   );
 }
-
 export default Dashboard;

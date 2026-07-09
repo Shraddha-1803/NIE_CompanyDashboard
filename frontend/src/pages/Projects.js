@@ -1,36 +1,72 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import API from "../services/api";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import { useEffect, useRef, useState } from "react";
 
 function Projects() {
   const [projects, setProjects] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [showTeamDropdown, setShowTeamDropdown] = useState(false);
+  const [teamSearch, setTeamSearch] = useState("");
+  const teamDropdownRef = useRef(null);
   const [userRole, setUserRole] = useState("");
+  const [user, setUser] = useState(null);
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
   console.log("showModal =", showModal);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
-    team: "",
-    lead: "",
+    team: [],
     progress: "",
     status: "Planning"
   });
+  const fetchEmployees = async () => {
+  try {
+    const res = await API.get("/auth/users");
+    setEmployees(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
   const fetchProjects = async () => {
   try {
     const res = await API.get("/projects");
     const profile = await API.get("/auth/profile");
-setUserRole(profile.data.role);
+    setUserRole(profile.data.role);
+    setUser(profile.data);
     console.log("Projects fetched:", res.data);
     setProjects(res.data);
   } catch (err) {
     console.log(err);
   }
 };
-  useEffect(() => {
-    fetchProjects();
-  }, []);
+useEffect(() => {
+  fetchProjects();
+  fetchEmployees();
+}, []);
+useEffect(() => {
+  function handleClickOutside(event) {
+    if (
+      teamDropdownRef.current &&
+      !teamDropdownRef.current.contains(event.target)
+    ) {
+      setShowTeamDropdown(false);
+    }
+  }
+
+  document.addEventListener(
+    "mousedown",
+    handleClickOutside
+  );
+
+  return () =>
+    document.removeEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+}, []);
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -41,9 +77,16 @@ setUserRole(profile.data.role);
   try {
     console.log("Submitting:", formData);
     if (editingId) {
+      const payload =
+      userRole==="admin"
+      ? formData
+      : {
+          status: formData.status,
+          progress: formData.progress
+      };
       const res = await API.put(
         `/projects/${editingId}`,
-        formData
+        payload
       );
       console.log("Update Response:", res);
     } else {
@@ -58,8 +101,7 @@ setUserRole(profile.data.role);
     setEditingId(null);
     setFormData({
       name: "",
-team: userRole === "admin" ? "" : "Not Assigned",
-lead: userRole === "admin" ? "" : "Not Assigned",
+      team:  [],
       progress: "",
       status: "Planning"
     });
@@ -70,13 +112,20 @@ lead: userRole === "admin" ? "" : "Not Assigned",
 };
   const handleEdit = (project) => {
     setEditingId(project._id);
+    if(userRole==="admin"){
     setFormData({
       name: project.name,
-      team: project.team,
-      lead: project.lead,
+      team: Array.isArray(project.team) ? project.team : [],
       progress: project.progress,
       status: project.status
     });
+    }else{
+      setFormData({
+        name: project.name,
+        progress: project.progress,
+        status:project.status
+      });
+    }
     setShowModal(true);
   };
   const handleDelete = async (id) => {
@@ -89,12 +138,24 @@ lead: userRole === "admin" ? "" : "Not Assigned",
       console.log(err);
     }
   };
-  const filteredProjects =
-    projects.filter((project) =>
-      project.name
-        ?.toLowerCase()
-        .includes(search.toLowerCase())
-    );
+  const filteredEmployees = employees.filter((emp) =>
+  emp.name
+    .toLowerCase()
+    .includes(teamSearch.toLowerCase())
+);
+    const visibleProjects =
+  userRole === "admin"
+    ? projects
+    : projects.filter((project) =>
+        Array.isArray(project.team)
+          ? project.team.includes(user?.name)
+          : false
+      );
+const filteredProjects = visibleProjects.filter((project) =>
+  project.name
+    ?.toLowerCase()
+    .includes(search.toLowerCase())
+);
   return (
     <>
       <Navbar />
@@ -113,14 +174,14 @@ lead: userRole === "admin" ? "" : "Not Assigned",
                 </p>
               </div>
             </div>
+            {userRole === "admin" && (
             <button
               className="crm-btn"
               onClick={() => {
                 setEditingId(null);
                 setFormData({
                   name: "",
-                  team: "",
-                  lead: "",
+                  team: [],
                   progress: "",
                   status: "Planning"
                 });
@@ -129,6 +190,7 @@ lead: userRole === "admin" ? "" : "Not Assigned",
             >
               + Add Project
             </button>
+            )}
           </div>
           <div className="employee-toolbar">
             <input
@@ -148,7 +210,6 @@ lead: userRole === "admin" ? "" : "Not Assigned",
                   <th>#</th>
                   <th>Project</th>
                   <th>Team</th>
-                  <th>Lead</th>
                   <th>Progress</th>
                   <th>Status</th>
                   <th>Actions</th>
@@ -178,11 +239,8 @@ lead: userRole === "admin" ? "" : "Not Assigned",
                       </td>
                       <td>
                         <span className="department-pill">
-                          {project.team}
+                          {Array.isArray(project.team) ? project.team.join(", ") : project.team}
                         </span>
-                      </td>
-                      <td>
-                        {project.lead}
                       </td>
                       <td>
                         <div className="progress-wrapper">
@@ -212,39 +270,42 @@ lead: userRole === "admin" ? "" : "Not Assigned",
                         <button
                           className="icon-btn"
                           onClick={() =>
-                            alert(
-                              `
-Project: ${project.name}
-Team: ${project.team}
-Lead: ${project.lead}
-Progress: ${project.progress}%
-Status: ${project.status}
-`
-                            )
+                          alert(`
+                          Project: ${project.name}
+                          Team: ${
+                            Array.isArray(project.team)
+                              ? project.team.join(", ")
+                              : project.team
+                          }
+                          Progress: ${project.progress}%
+                          Status: ${project.status}
+                          `)
                           }
                         >
                           👁
                         </button>
-                        {userRole === "admin" && (
+{userRole === "admin" ? (
   <>
     <button
       className="icon-btn"
-      onClick={() =>
-        handleEdit(project)
-      }
+      onClick={() => handleEdit(project)}
     >
       ✎
     </button>
-
     <button
       className="delete-icon-btn"
-      onClick={() =>
-        handleDelete(project._id)
-      }
+      onClick={() => handleDelete(project._id)}
     >
       🗑
     </button>
   </>
+) : (
+  <button
+    className="icon-btn"
+    onClick={() => handleEdit(project)}
+  >
+    ✎
+  </button>
 )}
                       </td>
                     </tr>
@@ -263,24 +324,101 @@ Status: ${project.status}
                 ? "Edit Project"
                 : "Add Project"}
             </h3>
+            {userRole === "admin" ? (
+              <>
             <input
               name="name"
               placeholder="Project Name"
               value={formData.name}
               onChange={handleChange}
             />
+            <div
+  className="team-dropdown"
+  ref={teamDropdownRef}
+>
+  <div
+    className="team-input"
+    onClick={() =>
+      setShowTeamDropdown(!showTeamDropdown)
+    }
+  >
+    {formData.team.length === 0 ? (
+      <span className="placeholder">
+        Select Team Members
+      </span>
+    ) : (
+      formData.team.map((member) => (
+        <span
+          key={member}
+          className="team-tag"
+        >
+          {member}
+          <span
+            className="remove-tag"
+            onClick={(e) => {
+              e.stopPropagation();
+              setFormData({
+                ...formData,
+                team: formData.team.filter(
+                  (m) => m !== member
+                ),
+              });
+            }}
+          >
+            ×
+          </span>
+        </span>
+      ))
+    )}
+  </div>
+  {showTeamDropdown && (
+    <div className="team-menu">
+      <input
+        className="team-search"
+        placeholder="Search employee..."
+        value={teamSearch}
+        onChange={(e) =>
+          setTeamSearch(e.target.value)
+        }
+      />
+      <div className="team-list">
+        {filteredEmployees.map((employee) => (
+          <label
+            key={employee._id}
+            className="team-item"
+          >
             <input
-              name="team"
-              placeholder="Assigned Team"
-              value={formData.team}
-              onChange={handleChange}
+              type="checkbox"
+              checked={formData.team.includes(
+                employee.name
+              )}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setFormData({
+                    ...formData,
+                    team: [
+                      ...formData.team,
+                      employee.name,
+                    ],
+                  });
+                } else {
+                  setFormData({
+                    ...formData,
+                    team: formData.team.filter(
+                      (member) =>
+                        member !== employee.name
+                    ),
+                  });
+                }
+              }}
             />
-            <input
-              name="lead"
-              placeholder="Project Lead"
-              value={formData.lead}
-              onChange={handleChange}
-            />
+            {employee.name}
+          </label>
+        ))}
+      </div>
+    </div>
+  )}
+</div>
             <input
               name="progress"
               placeholder="Progress %"
@@ -305,6 +443,30 @@ Status: ${project.status}
                 Completed
               </option>
             </select>
+            </>
+) : (
+<>
+    <input
+        value={formData.name}
+        readOnly
+    />
+    <input
+      type="number"
+      name="progress"
+      value={formData.progress}
+      onChange={handleChange}
+    />
+    <select
+        name="status"
+        value={formData.status}
+        onChange={handleChange}
+    >
+        <option>Planning</option>
+        <option>In Progress</option>
+        <option>Testing</option>
+        <option>Completed</option>
+    </select>
+</> )}
             <button
               onClick={handleSubmit}
             >

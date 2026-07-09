@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
 const projectSchema = new mongoose.Schema({
   name: String,
-  team: String,
-  lead: String,
+  team: [
+    {
+      type: String
+    }
+  ],
   status: String,
   progress: Number
 });

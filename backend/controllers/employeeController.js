@@ -63,12 +63,16 @@ const createEmployee = async(req,res)=>{
         await Notification.create({
             message:
             `${employee.name} was added as a new employee`,
-            type:"employee"
+            type:"employee",
+            employeeId: employee._id,
+            createdBy: req.user.id
         });
         await Activity.create({
             action:"Added Employee",
             name:employee.name,
-            type:"Employee"
+            type:"Employee",
+            employeeId: employee._id,
+            createdBy: req.user.id
         });
         res.status(201).json(
             employee
@@ -101,12 +105,16 @@ const updateEmployee = async(req,res)=>{
         await Notification.create({
             message:
             `${employee.name} details were updated`,
-            type:"activity"
+            type:"activity",
+            employeeId: employee._id,
+            createdBy: req.user.id
         });
         await Activity.create({
             action:"Updated Employee",
             name:employee.name,
-            type:"Employee"
+            type:"Employee",
+            employeeId: employee._id,
+            createdBy: req.user.id
         });
         res.status(200).json(employee);
     }catch(error){
@@ -129,7 +137,9 @@ const deleteEmployee = async(req,res)=>{
         await Activity.create({
             action:"Deleted Employee",
             name:employee.name,
-            type:"Employee"
+            type:"Employee",
+            employeeId: employee._id,
+            createdBy: req.user.id
         });
         res.status(200).json({
             message:
@@ -174,15 +184,16 @@ const updateRole = async(req,res)=>{
         await Notification.create({
             message:
             `${employee.name} role changed to ${role}`,
-            type:"activity"
+            type:"activity",
+            employeeId: employee._id,
+            createdBy: req.user.id
         });
         await Activity.create({
-            action:
-            "Updated Employee Role",
-            name:
-            employee.name,
-            type:
-            "Employee"
+            action:"Updated Employee Role",
+            name:employee.name,
+            type:"Employee",
+            employeeId: employee._id,
+            createdBy: req.user.id
         });
         res.status(200).json({
             message:

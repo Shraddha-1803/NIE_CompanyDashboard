@@ -6,6 +6,7 @@ import {
   FaTasks
 } from "react-icons/fa";
 function Sidebar() {
+  const role = localStorage.getItem("role");
   return (
     <div className="sidebar">
       <NavLink
@@ -16,6 +17,7 @@ function Sidebar() {
       >
         <FaHome /> Dashboard
       </NavLink>
+      {role === "admin" && (
       <NavLink
         to="/employees"
         className={({ isActive }) =>
@@ -23,7 +25,7 @@ function Sidebar() {
         }
       >
         <FaUsers /> Employees
-      </NavLink>
+      </NavLink> )}
       <NavLink
         to="/projects"
         className={({ isActive }) =>

@@ -8,8 +8,8 @@ dotenv.config()
 const app = express()
 app.use(cors({
 origin:
-  // "http://localhost:3000"
-"https://company-dashboard-frontend-q5bn.onrender.com"
+  "http://localhost:3000"
+// "https://company-dashboard-frontend-q5bn.onrender.com"
 ,
 methods:["GET","POST","PUT","DELETE"],
 credentials:true

@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const [userRole, setUserRole] = useState("");
   const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -43,10 +44,19 @@ function Tasks() {
       console.log(err);
     }
   };
+  const fetchProfile = async () => {
+  try {
+    const res = await API.get("/auth/profile");
+    setUserRole(res.data.role);
+  } catch (err) {
+    console.log(err);
+  }
+};
   useEffect(() => {
     fetchTasks();
     fetchEmployees();
     fetchProjects();
+    fetchProfile();
   }, []);
   const handleChange = (e) => {
     setFormData({
@@ -57,7 +67,13 @@ function Tasks() {
   const handleSubmit = async () => {
     try {
       if (editingId) {
-        await API.put(`/tasks/${editingId}`, formData);
+        const payload =
+        userRole === "admin"
+        ? formData
+        : {
+            status: formData.status
+        };
+        await API.put(`/tasks/${editingId}`, payload);
       } else {
         await API.post("/tasks", formData);
       }
@@ -78,6 +94,7 @@ function Tasks() {
   };
   const handleEdit = (task) => {
     setEditingId(task._id);
+    if (userRole === "admin") {
     setFormData({
       title: task.title || "",
       description: task.description || "",
@@ -88,6 +105,12 @@ function Tasks() {
       priority: task.priority || "Medium",
       status: task.status || "Pending"
     });
+    } else {
+      setFormData({
+        title: task.title || "",
+        status: task.status || "Pending"
+         });
+        }
     setShowModal(true);
   };
   const handleDelete = async (id) => {
@@ -117,6 +140,7 @@ function Tasks() {
                 </p>
               </div>
             </div>
+            {userRole === "admin" && (
             <button
               className="crm-btn"
               onClick={() => {
@@ -133,7 +157,7 @@ function Tasks() {
               }}
             >
               + Add Task
-            </button>
+            </button> )}
           </div>
           <div className="employee-toolbar">
             <input
@@ -230,6 +254,7 @@ Status: ${task.status}`
                         >
                           ✎
                         </button>
+                        {userRole === "admin" && (
                         <button
                           className="delete-icon-btn"
                           onClick={() =>
@@ -238,6 +263,7 @@ Status: ${task.status}`
                         >
                           🗑
                         </button>
+                        )}
                       </td>
                     </tr>
                   )
@@ -255,6 +281,8 @@ Status: ${task.status}`
                 ? "Edit Task"
                 : "Add Task"}
             </h3>
+            {userRole === "admin" ? (
+<>
             <input
               type="text"
               name="title"
@@ -321,6 +349,26 @@ Status: ${task.status}`
               <option>In Progress</option>
               <option>Completed</option>
             </select>
+            </>
+) : (
+<>
+<input
+  value={formData.title}
+  readOnly
+/>
+
+<select
+  name="status"
+  value={formData.status}
+  onChange={handleChange}
+>
+  <option>Pending</option>
+  <option>In Progress</option>
+  <option>Completed</option>
+</select>
+
+</>
+)}
             <button onClick={handleSubmit}>
               Save
             </button>

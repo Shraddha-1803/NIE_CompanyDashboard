@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
@@ -28,6 +29,12 @@ setUserRole(profile.data.role);
   useEffect(() => {
     fetchEmployees();
   }, []);
+  const navigate = useNavigate();
+useEffect(() => {
+  if (userRole && userRole !== "admin") {
+    navigate("/dashboard");
+  }
+}, [userRole, navigate]);
   const handleChange = (e) => {
     setFormData({
       ...formData,
