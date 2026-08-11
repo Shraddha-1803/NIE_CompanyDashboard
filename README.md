@@ -6,6 +6,14 @@ The system helps administrators monitor company operations with real-time data u
 
 ---
 
+# 🌐 Live Demo
+
+**View My Web-App Live :**
+
+https://company-dashboard-frontend-q5bn.onrender.com
+
+---
+
 # 🚀 Features
 
 ## 🔐 Authentication
@@ -424,14 +432,6 @@ Planned features:
 - File management
 - Deployment support
 
-
----
-
-# 🌐 Live Demo
-
-**View My Web-App Live :**
-
-https://company-dashboard-frontend-q5bn.onrender.com
 
 ---
 
